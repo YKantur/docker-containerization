@@ -1,4 +1,5 @@
-﻿FROM golang:1.22
+﻿#Basic Dockerfile for go application
+FROM golang:1.22
 
 WORKDIR /appAdd commentMore actions
 
