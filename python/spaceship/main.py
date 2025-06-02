@@ -3,4 +3,4 @@ from spaceship.config import Settings
 
 app = make_app(Settings())
 
-//Dummy comment to ensure Dockerfile is layered optimized
+# This is the entry point for the FastAPI application.
