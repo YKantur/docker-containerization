@@ -1,0 +1,29 @@
+﻿services:
+  bookstore:
+    image: bookstore
+    build:
+      context: .
+      dockerfile: BookStore/Dockerfile
+    ports:
+      - "605:8080"
+    environment:
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__BookStoreContext: Server = bookStoreDb;Database = BookStoreDb;User Id=sa;Password=hotKantur52;Encrypt=True;TrustServerCertificate=true
+    depends_on:
+      bookStoreDb:
+        condition: service_started
+        
+  bookStoreDb:
+    image: mcr.microsoft.com/mssql/server
+    container_name: bookStoreDb
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=hotKantur52
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+volumes:
+  mssql_data:
