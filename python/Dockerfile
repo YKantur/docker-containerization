@@ -1,17 +1,14 @@
-﻿FROM python:3.10-alpine as builder
-
-RUN apk add --no-cache gcc musl-dev linux-headers
-
-COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
-
-FROM python:3.10-alpine
+﻿FROM python:3.10-bullseye
 
 WORKDIR /app
 
-COPY --from=builder /root/.local /root/.local
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
-ENV PATH=/root/.local/bin:$PATH
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 COPY build/ build/
 
