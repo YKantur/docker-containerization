@@ -2,11 +2,23 @@
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY build/ build/
+
+COPY spaceship/config.py spaceship/config.py
+COPY spaceship/__init__.py spaceship/__init__.py
+
+COPY spaceship/routers/ spaceship/routers/
+
+COPY spaceship/main.py spaceship/main.py
+COPY spaceship/app.py spaceship/app.py
 
 EXPOSE 8000
 
